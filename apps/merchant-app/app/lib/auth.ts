@@ -1,5 +1,4 @@
-import GoogleProvider from "next-auth/providers/Google"
-
+import GoogleProvider  from 'next-auth/providers/google';
 export const authOptions = {
     providers : [
         GoogleProvider({
@@ -7,4 +6,4 @@ export const authOptions = {
             clientSecret: process.env.GOOGLE_CLIENT_SECRET || ""
         })
     ]
-}
+} 
