@@ -1,12 +1,20 @@
-import { PrismaClient } from "@repo/db/client";
+"use client"
+import { db } from "@repo/db/client";
+import { Button } from "@repo/ui/button";
+import { Appbar } from "@repo/ui/AppBar";
+import { signIn, signOut, useSession } from "next-auth/react";
 
-const client = new PrismaClient();
+
+// const client = new PrismaClient();
 
 
 export default function Page(){ 
+  const session = useSession();
   return (
     <>
-      <div className="text-2xl">hi there from the user app built usign the nextjs and bunch other services for this purpose </div>
+      <div>
+        <Appbar onSignin={signIn} onSignout={signOut} user={session.data?.user}></Appbar>
+      </div>
     </>
       );
 }

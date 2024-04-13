@@ -1,29 +1,42 @@
+import {db} from '@repo/db/client';
 import CredentialsProvider  from "next-auth/providers/credentials"
 // import 
+// import bcrypt from "bcrypt";
+// import db from "@repo/db/client/prisma";
+// import bcrypt from "bcryptjs";
 import bcrypt from "bcrypt";
-import db from "@repo/db/client";
+
+
+
+// import 
 
 export const authOptions = {
     providers : [
         CredentialsProvider({
             name : 'Credentials', 
             credentials : {
+                email : {label : "Enter your Email here", type : "text", placeholder : "123@gmail.com"},
                 phone : {label : "Phone Number", type : "text", placeholder : "1212121"},
                 password : {label : "Password", type : "text"}
 
             }, 
 
             async authorize(credentials : any){
+                console.log("inside the authorize function in the authoptions in users app for this purpose");
+                console.log("the credentials of the user is \n", credentials);
+                console.log(typeof(credentials.password.toString()));
                 //DO zod validation here OTP validation here for this purpose 
-                const hashedPassword = await bcrypt.has(credentials.password, 10);
+                const hashedPassword = await bcrypt.hash(credentials.password.toString(), 10);
+                console.log("the hashed password is: " + hashedPassword);
                 const existingUser = await db.user.findFirst({
                     where : {
                         number : credentials.phone
                     }
                 });
-
+                console.log("the value of the existing user is " + existingUser);
                 // check whether the user already exists
                 if (existingUser) {
+                    console.log("GOT THE USER IN DB\n\n");
                     // check whether password is correct or not for this purpose
                     const passwordValidation = await bcrypt.compare(credentials.password, existingUser.password);
 
@@ -44,8 +57,10 @@ export const authOptions = {
                 // if the user does not exist then we have to create the new entry in the db with the given  credentials for this purpose 
                 try {
                     // using the prisma to create the new entry in db for this purpose 
+                    console.log("USER DOES NOT EXIST HENCE CREATING NEW ONE\n\n\n");
                     const user = await db.user.create({
                         data: {
+                            email : credentials.email,
                             number: credentials.phone,
                             password: hashedPassword
                         }
@@ -72,6 +87,7 @@ export const authOptions = {
     callbacks: {
         // TODO: can u fix the type here? Using any is bad
         async session({ token, session }: any) {
+            console.log("inside the session callback function of the user");
             session.user.id = token.sub
 
             return session
