@@ -66,6 +66,8 @@ export const authOptions = {
                         }
                     });
                     
+
+                    // TODO:: Ideally we should be able to send the OTP to the user and then verify them to be able to login to the wallet app for this purpose. This is something we will be creating in future as the upcoming feature for this purpose 
                     // then returning the credentials of the user to make the session using the cookie for this purpose 
                     return {
                         id: user.id.toString(),
