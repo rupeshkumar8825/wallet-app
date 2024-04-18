@@ -66,6 +66,14 @@ export const authOptions = {
                         }
                     });
                     
+                    // here also we have to create the balance entry in the database for that particular user for this purpose 
+                    const balance = await db.balance.create({
+                        data : {
+                            userId : user.id, 
+                            amount : 0, 
+                            locked : 0, 
+                        }
+                    });
 
                     // TODO:: Ideally we should be able to send the OTP to the user and then verify them to be able to login to the wallet app for this purpose. This is something we will be creating in future as the upcoming feature for this purpose 
                     // then returning the credentials of the user to make the session using the cookie for this purpose 
