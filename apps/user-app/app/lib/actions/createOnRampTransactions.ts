@@ -27,7 +27,7 @@ export async function createOnRampTransaction (amount : number, provider : strin
     await db.onRampTransaction.create({
         data : {
             userId : parseInt(userId), 
-            amount : amount *100, 
+            amount : amount, 
             status : "Processing", 
             startTime : new Date(), 
             provider : provider, 

@@ -28,7 +28,7 @@ async function getOnRampTransactions() {
     });
     return txns.map(t => ({
         time: t.startTime,
-        amount: t.amount,
+        amount: t.amount/100,
         status: t.status,
         provider: t.provider
     }))
