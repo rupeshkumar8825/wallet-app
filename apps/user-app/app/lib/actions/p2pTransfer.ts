@@ -69,6 +69,17 @@ export async function p2pTransfer(to : string, amount: number)
                 }
             }
         });
+
+        // we have to add the new entry in the p2p transfer table for this purpose 
+        await tx.p2pTransfer.create({
+            data : {
+
+                amount : amount, 
+                timeStamp : new Date(), 
+                fromUserId : Number(from), 
+                toUserId : toUser.id, 
+            }
+        });
     });
 
 }
